@@ -1,38 +1,31 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import "../index.css";
 const Form = (props) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [live, setLive] = useState("");
-
-  const handleName = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleLive = (e) => {
-    setLive(e.target.value);
-  };
+  const nameInputRef = useRef();
+  const emailInputRef = useRef();
+  const liveInputRef = useRef();
 
   const addUser = (e) => {
     e.preventDefault();
 
-    if (!name.trim() || !email.trim() || !live.trim()) {
+    if (
+      !nameInputRef.current.value.trim() ||
+      !emailInputRef.current.value.trim() ||
+      !liveInputRef.current.value.trim()
+    ) {
       alert("Please fill the form");
       return;
     }
     let user = {
-      name: name,
-      email: email,
-      live: live,
+      name: nameInputRef.current.value,
+      email: emailInputRef.current.value,
+      live: liveInputRef.current.value,
     };
     props.getUserInfo(user);
-    setName("");
-    setEmail("");
-    setLive("");
+
+    nameInputRef.current.value = "";
+    emailInputRef.current.value = "";
+    liveInputRef.current.value = "";
   };
 
   return (
@@ -42,15 +35,15 @@ const Form = (props) => {
         <div className='row'>
           <div className='input-field'>
             <label htmlFor='name'>Name</label>
-            <input type='text' value={name} onChange={handleName} />
+            <input type='text' id='name' ref={nameInputRef} />
           </div>
           <div className='input-field'>
             <label htmlFor='email'>Email</label>
-            <input type='text' value={email} onChange={handleEmail} />
+            <input type='text' id='email' ref={emailInputRef} />
           </div>
           <div className='input-field'>
             <label htmlFor='live'>Live</label>
-            <input type='text' value={live} onChange={handleLive} />
+            <input type='text' id='live' ref={liveInputRef} />
           </div>
         </div>
 
